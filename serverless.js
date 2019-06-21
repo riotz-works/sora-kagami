@@ -21,7 +21,10 @@ module.exports = {
     runtime: `nodejs${ pkg.engines.node }`,
     memorySize: 128,
     timeout: 29,
-    logRetentionInDays: 7
+    logRetentionInDays: 7,
+    environment: {
+      STAGE: '${ self:provider.stage }'
+    }
   },
 
   plugins: [
