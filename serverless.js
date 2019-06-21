@@ -34,8 +34,19 @@ module.exports = {
     stages: {
       region: { dev: 'ap-northeast-1', qas: '', prd: '' },
       suffix: { dev: '-dev',           qas: '', prd: '' }
+    },
+    names: {
+      lambda: {
+        systems:  '${ self:service }-systems${ self:custom.stages.suffix.${ self:provider.stage }}'
+      }
     }
   },
 
-  functions: {}
+  functions: {
+    Systems: {
+      name: '${ self:custom.names.lambda.systems }',
+      handler: 'src/aws-lambda-handler/systems.handler',
+      events: [{ http: { path: 'version', method: 'get', cors: true }}]
+    }
+  }
 };
