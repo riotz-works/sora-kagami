@@ -4,6 +4,7 @@ import 'reflect-metadata';  // tslint:disable-line:no-import-side-effect ordered
 import { APIGatewayProxyEvent, Handler } from 'aws-lambda';
 import dayjs from 'dayjs';
 import { container } from 'tsyringe';
+import { ulid } from 'ulid';
 import { Config, Env } from '~/config';
 import { AwsApi } from '~/external-api/aws';
 import { Attachment, Message, SlackApi, SlashCommand } from '~/external-api/slack';
@@ -53,7 +54,7 @@ export const handler: Handler<APIGatewayProxyEvent, void> = async (event: APIGat
       await apis.aws.s3PutObject(Env.S3_IMAGES_BUCKET, filenames.map, value, Config.CONTENT_TYPE_MAP);
     });
 
-    const message = createMessage(place, weathers);
+    const message = createMessage(place, weathers, filenames);
     await apis.slack.response(command, message);
   } catch (err) { await handleError(err as object, command); }
 };
@@ -90,13 +91,15 @@ const getWeathers = async (geo: Geometry): Promise<Weathers> => {
 };
 
 
-const createMessage = ({ area, buildings }: Place, {current, after1h }: Weathers): Message => {
+interface Filenames { map: string; }  // tslint:disable-line: completed-docs - 'cuz internally used data model
+const createMessage = ({ area, buildings }: Place, {current, after1h }: Weathers, filenames: Filenames): Message => {
   const icon = current.Rainfall === 0 ? '☀️' : current.Rainfall < 4 ? '🌦️' : '🌧️';
   const rain = `${dayjs(current.Date).format('H:mm')} の 降水強度 ${current.Rainfall} mm/h ⇒ ${after1h.Rainfall} mm/h`;
   const info = `🏙 ${ buildings.length < Config.SLACK_INFO_TEXT_LENGTH ? buildings : buildings.slice(0, Config.SLACK_INFO_TEXT_LENGTH)}...`;
+  const map  = `<http://${Env.S3_IMAGES_BUCKET}.s3-website-${Env.S3_IMAGES_REGION}.amazonaws.com/${filenames.map}?${ulid()}| >`;
 
   const message: Message = {
-    text: `${icon} ${area} ${rain}\n${info}`,
+    text: `${icon} ${area} ${rain}\n${info}${map}`,
     response_type: 'in_channel'
   };
   console.debug('Reply: %s', JSON.stringify(message, undefined, 2));
