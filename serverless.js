@@ -41,7 +41,8 @@ module.exports = {
     },
     names: {
       lambda: {
-        systems:  '${ self:service }-systems${ self:custom.stages.suffix.${ self:provider.stage }}'
+        systems:  '${ self:service }-systems${ self:custom.stages.suffix.${ self:provider.stage }}',
+        weathers: '${ self:service }-weathers${ self:custom.stages.suffix.${ self:provider.stage }}'
       }
     }
   },
@@ -51,6 +52,11 @@ module.exports = {
       name: '${ self:custom.names.lambda.systems }',
       handler: 'src/aws-lambda-handler/systems.handler',
       events: [{ http: { path: 'version', method: 'get', cors: true }}]
+    },
+    Weathers: {
+      name: '${ self:custom.names.lambda.weathers }',
+      handler: 'src/aws-lambda-handler/slack-weathers-command.handler',
+      events: [{ http: { path: 'weathers', method: 'post', cors: true, async: true }}]
     }
   }
 };
