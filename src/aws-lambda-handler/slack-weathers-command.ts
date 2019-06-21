@@ -61,7 +61,7 @@ export const handler: Handler<APIGatewayProxyEvent, void> = async (event: APIGat
       })]
     );
 
-    const message = createMessage(place, weathers, filenames);
+    const message = createMessage(place, weathers, filenames, geo);
     await apis.slack.response(command, message);
   } catch (err) { await handleError(err as object, command); }
 };
@@ -118,7 +118,7 @@ const createChartColor = (weathers: Weather[], opacity: number): string[] =>
 
 
 interface Filenames { map: string; chart: string; }  // tslint:disable-line: completed-docs - 'cuz internally used data model
-const createMessage = ({ area, buildings }: Place, {current, after1h }: Weathers, filenames: Filenames): Message => {
+const createMessage = ({ area, buildings }: Place, {current, after1h }: Weathers, filenames: Filenames, geo: Geometry): Message => {
   const icon = current.Rainfall === 0 ? '☀️' : current.Rainfall < 4 ? '🌦️' : '🌧️';
   const rain = `${dayjs(current.Date).format('H:mm')} の 降水強度 ${current.Rainfall} mm/h ⇒ ${after1h.Rainfall} mm/h`;
   const info = `🏙 ${ buildings.length < Config.SLACK_INFO_TEXT_LENGTH ? buildings : buildings.slice(0, Config.SLACK_INFO_TEXT_LENGTH)}...`;
@@ -127,8 +127,11 @@ const createMessage = ({ area, buildings }: Place, {current, after1h }: Weathers
   const chart = `<${s3}/${filenames.chart}?${ulid()}| >`;
   const map   = `<${s3}/${filenames.map}?${ulid()}| >`;
 
+  const yahoo = `<https://weather.yahoo.co.jp/weather/zoomradar/?lon=${geo.lon}&lat=${geo.lat}&z=13|ウェブで詳しく見る>`;
+  const credit = `${yahoo}  -  <https://developer.yahoo.co.jp/about|Web Services by Yahoo! JAPAN>`;
+
   const message: Message = {
-    text: `${icon} ${area} ${rain}\n${info}${chart}${map}`,
+    text: `${icon} ${area} ${rain}\n${info}${chart}${map}${credit}`,
     response_type: 'in_channel'
   };
   console.debug('Reply: %s', JSON.stringify(message, undefined, 2));
