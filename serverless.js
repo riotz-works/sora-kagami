@@ -28,9 +28,11 @@ module.exports = {
       Resource: 'arn:aws:s3:::${self:custom.names.s3.images}/*'
     }],
     environment: {
-      STAGE:        '${ self:provider.stage }',
-      SLACK_TOKENS: '${ env:SLACK_TOKENS }',
-      YOLP_APP_ID:  '${ env:YOLP_APP_ID }'
+      STAGE:            '${ self:provider.stage }',
+      S3_IMAGES_REGION: '${ self:provider.region }',
+      S3_IMAGES_BUCKET: '${ self:custom.names.s3.images }',
+      SLACK_TOKENS:     '${ env:SLACK_TOKENS }',
+      YOLP_APP_ID:      '${ env:YOLP_APP_ID }'
     }
   },
 

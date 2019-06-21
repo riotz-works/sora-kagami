@@ -31,6 +31,9 @@ export class Env {
 
   public static get STAGE(): Stage { return process.env.STAGE as Stage || Env.fail('STAGE'); }
 
+  public static get S3_IMAGES_REGION(): string { return process.env.S3_IMAGES_REGION || Env.fail('S3_IMAGES_REGION'); }
+  public static get S3_IMAGES_BUCKET(): string { return process.env.S3_IMAGES_BUCKET || Env.fail('S3_IMAGES_BUCKET'); }
+
   public static get SLACK_TOKENS(): string[] { return JSON.parse(process.env.SLACK_TOKENS || '[]') as string[]; }
 
   public static get YOLP_APP_ID(): string { return process.env.YOLP_APP_ID || Env.fail('YOLP_APP_ID'); }
