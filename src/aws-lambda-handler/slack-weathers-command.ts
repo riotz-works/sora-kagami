@@ -6,11 +6,13 @@ import { container } from 'tsyringe';
 import { Config, Env } from '~/config';
 import { Attachment, SlackApi, SlashCommand } from '~/external-api/slack';
 import { Geometry } from '~/external-api/yolp/common';
+import { GeoCodeApi } from '~/external-api/yolp/geo-code';
 import { ZipCodeApi, ZipCodeRequest } from '~/external-api/yolp/zip-code';
 
 const apis = {
   slack: container.resolve(SlackApi),
-  zip: container.resolve(ZipCodeApi)
+  zip: container.resolve(ZipCodeApi),
+  geo: container.resolve(GeoCodeApi)
 };
 
 
@@ -32,7 +34,7 @@ export const handler: Handler<APIGatewayProxyEvent, void> = async (event: APIGat
 
   try {
     const geo = await getGeometry(command.text);
-    if (!geo) { return apis.slack.response(command, { text: `場所の検索に失敗しました。\`${command.command} [郵便番号]\` を入力してください。` }); }
+    if (!geo) { return apis.slack.response(command, { text: `場所の検索に失敗しました。\`${command.command} [郵便番号 または 地名]\` を入力してください。` }); }
 
     await apis.slack.response(command, { text: geo.coords });
   } catch (err) { await handleError(err as object, command); }
@@ -45,7 +47,8 @@ const getGeometry = async (text: string): Promise<Geometry | undefined> => {
     const zip = await apis.zip.get(Config.REQUEST_ZIP(code[1]));
     return zip.Feature && Object.assign(new Geometry(), zip.Feature[0].Geometry);
   }
-  return undefined;
+  const geo = await apis.geo.get(Config.REQUEST_GEO(text));
+  return geo.Feature && Object.assign(new Geometry(), geo.Feature[0].Geometry);
 };
 
 
