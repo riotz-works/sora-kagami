@@ -7,12 +7,14 @@ import { Config, Env } from '~/config';
 import { Attachment, SlackApi, SlashCommand } from '~/external-api/slack';
 import { Geometry } from '~/external-api/yolp/common';
 import { GeoCodeApi } from '~/external-api/yolp/geo-code';
+import { AreaInfo, PlaceInfo, PlaceInfoApi } from '~/external-api/yolp/place-info';
 import { ZipCodeApi, ZipCodeRequest } from '~/external-api/yolp/zip-code';
 
 const apis = {
   slack: container.resolve(SlackApi),
   zip: container.resolve(ZipCodeApi),
-  geo: container.resolve(GeoCodeApi)
+  geo: container.resolve(GeoCodeApi),
+  place: container.resolve(PlaceInfoApi)
 };
 
 
@@ -36,7 +38,9 @@ export const handler: Handler<APIGatewayProxyEvent, void> = async (event: APIGat
     const geo = await getGeometry(command.text);
     if (!geo) { return apis.slack.response(command, { text: `場所の検索に失敗しました。\`${command.command} [郵便番号 または 地名]\` を入力してください。` }); }
 
-    await apis.slack.response(command, { text: geo.coords });
+    const place = await getPlace(geo);
+
+    await apis.slack.response(command, { text: place.area });
   } catch (err) { await handleError(err as object, command); }
 };
 
@@ -49,6 +53,16 @@ const getGeometry = async (text: string): Promise<Geometry | undefined> => {
   }
   const geo = await apis.geo.get(Config.REQUEST_GEO(text));
   return geo.Feature && Object.assign(new Geometry(), geo.Feature[0].Geometry);
+};
+
+interface Place { area: string; buildings: string; }  // tslint:disable-line: completed-docs - 'cuz internally used data model
+const getPlace = async (geo: Geometry): Promise<Place> => {
+  const place = await apis.place.get(Config.REQUEST_PLACE(geo));
+  const areas = place.ResultSet.Area.filter((value: AreaInfo) => value.Type === 2);
+  return {
+    area: areas.length !== 0 ? areas[0].Name : place.ResultSet.Address[1],
+    buildings: place.ResultSet.Result.map((value: PlaceInfo) => value.Name).join(', ')
+  };
 };
 
 
