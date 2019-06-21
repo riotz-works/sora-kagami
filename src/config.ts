@@ -1,4 +1,5 @@
 // tslint:disable: completed-docs - 'cuz configuration variables
+import { CanvasRenderService } from 'chartjs-node-canvas';
 import dayjs from 'dayjs';
 import { name, version } from '~/../package.json';
 import { Geometry } from '~/external-api/yolp/common';
@@ -20,6 +21,10 @@ export class Config {
   public static readonly SLACK_INFO_TEXT_LENGTH = 24;
 
   public static readonly CONTENT_TYPE_MAP = 'image/jpg';
+  public static readonly CONTENT_TYPE_CHART = 'image/png';
+
+  public static readonly ALPHA_BORDER = 100;
+  public static readonly ALPHA_BACKGROUND = 60;
 
   public static REQUEST_ZIP(query: string): ZipCodeRequest { return { appid, query, detail: 'simple', results: 1 }; }
   public static REQUEST_GEO(query: string): GeoCodeRequest { return { appid, query, category: 'landmark,address,world', results: 1 }; }
@@ -29,10 +34,13 @@ export class Config {
     return { appid, lon, lat, z: 13, style: 'base:railway', overlay: 'type:rainfall', output: 'jpg', width: 600, height: 600 };
   }
 
-  public static FILENAMES(geo: Geometry, { Date }: Weather): { map: string } {
+  public static CHART_CANVAS(): CanvasRenderService { return new CanvasRenderService(400, 120); }
+
+  public static FILENAMES(geo: Geometry, { Date }: Weather): { map: string; chart: string } {
     const prefix = `${dayjs(Date).toISOString()}-${geo.coords.replace(',', '-')}`;
     return {
-      map: `${prefix}-map.jpg`
+      map: `${prefix}-map.jpg`,
+      chart: `${prefix}-chart.png`
     };
   }
 }

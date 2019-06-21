@@ -2,7 +2,9 @@ import 'reflect-metadata';  // tslint:disable-line:no-import-side-effect ordered
 
 // tslint:disable-next-line: ordered-imports - 'cus to place side effect imports at the beginning of the line
 import { APIGatewayProxyEvent, Handler } from 'aws-lambda';
+import { ChartConfiguration } from 'chart.js';
 import dayjs from 'dayjs';
+import hexToRgba from 'hex-rgba';
 import { container } from 'tsyringe';
 import { ulid } from 'ulid';
 import { Config, Env } from '~/config';
@@ -50,9 +52,14 @@ export const handler: Handler<APIGatewayProxyEvent, void> = async (event: APIGat
     const weathers = await getWeathers(geo);
 
     const filenames = Config.FILENAMES(geo, weathers.current);
-    await apis.map.get(Config.REQUEST_MAP(geo)).then(async (value: Buffer) => {
-      await apis.aws.s3PutObject(Env.S3_IMAGES_BUCKET, filenames.map, value, Config.CONTENT_TYPE_MAP);
-    });
+    await Promise.all([
+      apis.map.get(Config.REQUEST_MAP(geo)).then(async (value: Buffer) => {
+        await apis.aws.s3PutObject(Env.S3_IMAGES_BUCKET, filenames.map, value, Config.CONTENT_TYPE_MAP);
+      }),
+      Config.CHART_CANVAS().renderToBuffer(createChartOps(weathers.data), Config.CONTENT_TYPE_CHART).then(async (value: Buffer) => {
+        await apis.aws.s3PutObject(Env.S3_IMAGES_BUCKET, filenames.chart, value, Config.CONTENT_TYPE_CHART);
+      })]
+    );
 
     const message = createMessage(place, weathers, filenames);
     await apis.slack.response(command, message);
@@ -90,8 +97,27 @@ const getWeathers = async (geo: Geometry): Promise<Weathers> => {
   };
 };
 
+const createChartOps = (weathers: Weather[]): ChartConfiguration => {
+  const data = weathers.map((value: Weather) => value.Rainfall);
+  const borderColor = createChartColor(weathers, Config.ALPHA_BORDER);
+  const backgroundColor = createChartColor(weathers, Config.ALPHA_BACKGROUND);
+  return {
+    type: 'bar',
+    data: {
+      labels: weathers.map((value: Weather) => dayjs(value.Date).format('H:mm')),
+      datasets: [{ data, borderColor, backgroundColor }]
+    },
+    options: {
+      legend: { display: false },
+      scales: { yAxes: [{ ticks: { beginAtZero: true }}]}
+    }
+  };
+};
+const createChartColor = (weathers: Weather[], opacity: number): string[] =>
+  weathers.map((value: Weather) => hexToRgba(WeatherForecastApi.getLevelColor(value.Rainfall), opacity));
 
-interface Filenames { map: string; }  // tslint:disable-line: completed-docs - 'cuz internally used data model
+
+interface Filenames { map: string; chart: string; }  // tslint:disable-line: completed-docs - 'cuz internally used data model
 const createMessage = ({ area, buildings }: Place, {current, after1h }: Weathers, filenames: Filenames): Message => {
   const icon = current.Rainfall === 0 ? '☀️' : current.Rainfall < 4 ? '🌦️' : '🌧️';
   const rain = `${dayjs(current.Date).format('H:mm')} の 降水強度 ${current.Rainfall} mm/h ⇒ ${after1h.Rainfall} mm/h`;
