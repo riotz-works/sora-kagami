@@ -2,19 +2,22 @@ import 'reflect-metadata';  // tslint:disable-line:no-import-side-effect ordered
 
 // tslint:disable-next-line: ordered-imports - 'cus to place side effect imports at the beginning of the line
 import { APIGatewayProxyEvent, Handler } from 'aws-lambda';
+import dayjs from 'dayjs';
 import { container } from 'tsyringe';
 import { Config, Env } from '~/config';
 import { Attachment, Message, SlackApi, SlashCommand } from '~/external-api/slack';
 import { Geometry } from '~/external-api/yolp/common';
 import { GeoCodeApi } from '~/external-api/yolp/geo-code';
 import { AreaInfo, PlaceInfo, PlaceInfoApi } from '~/external-api/yolp/place-info';
+import { Weather, WeatherForecastApi } from '~/external-api/yolp/weather-forecast';
 import { ZipCodeApi, ZipCodeRequest } from '~/external-api/yolp/zip-code';
 
 const apis = {
   slack: container.resolve(SlackApi),
   zip: container.resolve(ZipCodeApi),
   geo: container.resolve(GeoCodeApi),
-  place: container.resolve(PlaceInfoApi)
+  place: container.resolve(PlaceInfoApi),
+  weather: container.resolve(WeatherForecastApi)
 };
 
 
@@ -39,8 +42,9 @@ export const handler: Handler<APIGatewayProxyEvent, void> = async (event: APIGat
     if (!geo) { return apis.slack.response(command, { text: `場所の検索に失敗しました。\`${command.command} [郵便番号 または 地名]\` を入力してください。` }); }
 
     const place = await getPlace(geo);
+    const weathers = await getWeathers(geo);
 
-    const message = createMessage(place);
+    const message = createMessage(place, weathers);
     await apis.slack.response(command, message);
   } catch (err) { await handleError(err as object, command); }
 };
@@ -66,12 +70,24 @@ const getPlace = async (geo: Geometry): Promise<Place> => {
   };
 };
 
+interface Weathers { current: Weather; after1h: Weather; data: Weather[]; }  // tslint:disable-line: completed-docs - 'cuz internally used data model
+const getWeathers = async (geo: Geometry): Promise<Weathers> => {
+  const data = (await apis.weather.get(Config.REQUEST_WEATHER(geo))).Feature[0].Property.WeatherList.Weather;
+  return {
+    current: data[0],
+    after1h: data.slice(-1)[0],
+    data
+  };
+};
 
-const createMessage = ({ area, buildings }: Place): Message => {
+
+const createMessage = ({ area, buildings }: Place, {current, after1h }: Weathers): Message => {
+  const icon = current.Rainfall === 0 ? '☀️' : current.Rainfall < 4 ? '🌦️' : '🌧️';
+  const rain = `${dayjs(current.Date).format('H:mm')} の 降水強度 ${current.Rainfall} mm/h ⇒ ${after1h.Rainfall} mm/h`;
   const info = `🏙 ${ buildings.length < Config.SLACK_INFO_TEXT_LENGTH ? buildings : buildings.slice(0, Config.SLACK_INFO_TEXT_LENGTH)}...`;
 
   const message: Message = {
-    text: `${area}\n${info}`,
+    text: `${icon} ${area} ${rain}\n${info}`,
     response_type: 'in_channel'
   };
   console.debug('Reply: %s', JSON.stringify(message, undefined, 2));

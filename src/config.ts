@@ -3,6 +3,7 @@ import { name, version } from '~/../package.json';
 import { Geometry } from '~/external-api/yolp/common';
 import { GeoCodeRequest } from '~/external-api/yolp/geo-code';
 import { PlaceInfoRequest } from '~/external-api/yolp/place-info';
+import { WeatherForecastRequest } from '~/external-api/yolp/weather-forecast';
 import { ZipCodeRequest } from '~/external-api/yolp/zip-code';
 
 
@@ -19,6 +20,7 @@ export class Config {
   public static REQUEST_ZIP(query: string): ZipCodeRequest { return { appid, query, detail: 'simple', results: 1 }; }
   public static REQUEST_GEO(query: string): GeoCodeRequest { return { appid, query, category: 'landmark,address,world', results: 1 }; }
   public static REQUEST_PLACE({ lon, lat }: Geometry): PlaceInfoRequest { return { appid, lon, lat }; }
+  public static REQUEST_WEATHER({ coords }: Geometry): WeatherForecastRequest { return { appid, coordinates: coords }; }
 }
 
 
