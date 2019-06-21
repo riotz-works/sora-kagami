@@ -1,11 +1,27 @@
 {
   "name": "sora-kagami",
+  "group": "riotz",
   "version": "0.0.1",
   "private": true,
-  "dependencies": {},
-  "devDependencies": {},
+  "dependencies": {
+    "source-map-support": "^0.5.12"
+  },
+  "devDependencies": {
+    "rimraf": "^2.6.3",
+    "serverless": "^1.45.1",
+    "serverless-offline": "^5.4.2",
+    "serverless-webpack": "^5.3.1",
+    "webpack": "^4.35.0",
+    "webpack-node-externals": "^1.7.2"
+  },
   "scripts": {
-    "setup": "yarn install --ignore-optional"
+    "clean": "rimraf .serverless",
+    "setup": "yarn install --ignore-optional",
+    "dev": "serverless offline start",
+    "deploy": "serverless deploy"
+  },
+  "engines": {
+    "node": "8.10"
   },
   "homepage": "https://github.com/riotz-works/sora-kagami#readme",
   "repository": {
