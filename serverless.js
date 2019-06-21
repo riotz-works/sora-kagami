@@ -22,6 +22,11 @@ module.exports = {
     memorySize: 128,
     timeout: 29,
     logRetentionInDays: 7,
+    iamRoleStatements: [{
+      Effect: 'Allow',
+      Action: [ 's3:PutObject' ],
+      Resource: 'arn:aws:s3:::${self:custom.names.s3.images}/*'
+    }],
     environment: {
       STAGE:        '${ self:provider.stage }',
       SLACK_TOKENS: '${ env:SLACK_TOKENS }',
@@ -44,6 +49,9 @@ module.exports = {
       lambda: {
         systems:  '${ self:service }-systems${ self:custom.stages.suffix.${ self:provider.stage }}',
         weathers: '${ self:service }-weathers${ self:custom.stages.suffix.${ self:provider.stage }}'
+      },
+      s3: {
+        images: '${ self:service }-images${ self:custom.stages.suffix.${ self:provider.stage }}'
       }
     }
   },
@@ -59,5 +67,42 @@ module.exports = {
       handler: 'src/aws-lambda-handler/slack-weathers-command.handler',
       events: [{ http: { path: 'weathers', method: 'post', cors: true, async: true }}]
     }
-  }
+  },
+
+  resources: [{
+    Resources: {
+      ImagesBucket: {
+        Type: 'AWS::S3::Bucket',
+        Properties: {
+          BucketName: '${ self:custom.names.s3.images }',
+          BucketEncryption: { ServerSideEncryptionConfiguration: [{ ServerSideEncryptionByDefault: { SSEAlgorithm: 'AES256' }}]},
+          AccessControl: 'Private',
+          WebsiteConfiguration: {
+            IndexDocument: 'index.html'
+          },
+          LifecycleConfiguration: {
+            Rules: [{
+              Id: 'expiration',
+              Status: 'Enabled',
+              ExpirationInDays: 3
+            }]
+          }
+        }
+      },
+      ImagesBucketPolicy: {
+        Type: 'AWS::S3::BucketPolicy',
+        Properties: {
+          Bucket: { 'Ref': 'ImagesBucket' },
+          PolicyDocument: {
+            Statement: {
+              Effect: 'Allow',
+              Action: [ 's3:GetObject' ],
+              Resource: 'arn:aws:s3:::${ self:custom.names.s3.images }/*',
+              Principal: '*'
+            }
+          }
+        }
+      }
+    }
+  }]
 };
