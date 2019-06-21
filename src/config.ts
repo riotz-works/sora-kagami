@@ -1,7 +1,7 @@
 // tslint:disable: completed-docs - 'cuz configuration variables
 import { CanvasRenderService } from 'chartjs-node-canvas';
 import dayjs from 'dayjs';
-import { name, version } from '~/../package.json';
+import { homepage, name, version } from '~/../package.json';
 import { Geometry } from '~/external-api/yolp/common';
 import { GeoCodeRequest } from '~/external-api/yolp/geo-code';
 import { PlaceInfoRequest } from '~/external-api/yolp/place-info';
@@ -17,6 +17,7 @@ export class Config {
 
   public static readonly NAME = name;
   public static readonly VERSION = version;
+  public static readonly HOMEPAGE = homepage;
 
   public static readonly SLACK_INFO_TEXT_LENGTH = 24;
 
@@ -59,6 +60,8 @@ export class Env {
   public static get SLACK_TOKENS(): string[] { return JSON.parse(process.env.SLACK_TOKENS || '[]') as string[]; }
 
   public static get YOLP_APP_ID(): string { return process.env.YOLP_APP_ID || Env.fail('YOLP_APP_ID'); }
+
+  public static get NOTE(): string { return process.env.NOTE || ''; }
 
 
   private static fail(envVarName: string): never {

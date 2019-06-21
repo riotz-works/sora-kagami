@@ -130,8 +130,11 @@ const createMessage = ({ area, buildings }: Place, {current, after1h }: Weathers
   const yahoo = `<https://weather.yahoo.co.jp/weather/zoomradar/?lon=${geo.lon}&lat=${geo.lat}&z=13|ウェブで詳しく見る>`;
   const credit = `${yahoo}  -  <https://developer.yahoo.co.jp/about|Web Services by Yahoo! JAPAN>`;
 
+  const project = `[<${Config.HOMEPAGE}|${Config.NAME} ${Config.VERSION}>]`;
+  const note = Env.NOTE.replace('{project}', project);
+
   const message: Message = {
-    text: `${icon} ${area} ${rain}\n${info}${chart}${map}${credit}`,
+    text: `${icon} ${area} ${rain}\n${info}${chart}${map}${credit}\n${note}`,
     response_type: 'in_channel'
   };
   console.debug('Reply: %s', JSON.stringify(message, undefined, 2));

@@ -32,7 +32,8 @@ module.exports = {
       S3_IMAGES_REGION: '${ self:provider.region }',
       S3_IMAGES_BUCKET: '${ self:custom.names.s3.images }',
       SLACK_TOKENS:     '${ env:SLACK_TOKENS }',
-      YOLP_APP_ID:      '${ env:YOLP_APP_ID }'
+      YOLP_APP_ID:      '${ env:YOLP_APP_ID }',
+      NOTE:             '${ env:NOTE }'
     }
   },
 
