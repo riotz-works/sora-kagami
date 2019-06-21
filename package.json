@@ -1,0 +1,20 @@
+{
+  "name": "sora-kagami",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "setup": "yarn install --ignore-optional"
+  },
+  "homepage": "https://github.com/riotz-works/sora-kagami#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/riotz-works/sora-kagami.git"
+  },
+  "bugs": {
+    "url": "https://github.com/riotz-works/sora-kagami/issues"
+  },
+  "author": "Riotz.works (https://riotz.works)",
+  "license": "MIT"
+}
