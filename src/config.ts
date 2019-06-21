@@ -19,6 +19,8 @@ export class Env {
 
   public static get STAGE(): Stage { return process.env.STAGE as Stage || Env.fail('STAGE'); }
 
+  public static get SLACK_TOKENS(): string[] { return JSON.parse(process.env.SLACK_TOKENS || '[]') as string[]; }
+
 
   private static fail(envVarName: string): never {
     console.error(`Environment variable "${envVarName}" is not set`);
