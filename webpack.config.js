@@ -24,6 +24,7 @@ module.exports = {
   },
   module: {
     rules: [
+      { test: /\.tsx?$/, use: [{ loader: 'tslint-loader', options: { typeCheck: true }}], enforce: 'pre' },
       { test: /\.tsx?$/, use: 'ts-loader' }
     ]
   },

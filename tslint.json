@@ -1,0 +1,48 @@
+{
+  "defaultSeverity": "warn",
+  "extends": [ "tslint:all" ],
+  "rules": {
+    // TODO: Some console functions allow until logger utility is introduced
+    "no-console": [ true, "log" ],
+
+    // Items specific to this project
+    "no-implicit-dependencies": [ true, [ "~", "aws-lambda", "aws-sdk" ]],  // Allow path aliases of owning source and modules provided in the execution environment.
+
+    // Item to invalidate Lint
+    "max-classes-per-file": false,              // To grouping of meaningful classes. (e.g. grouping similar models and/or models attached to related class)
+    "newline-before-return": false,             // To keep readability of small methods like 2 or 3 lines.
+    "newline-per-chained-call": false,          // To simply implement method chains can also prevent complexity. (e.g. `then()` of returning a promise)
+    "no-parameter-properties": false,           // To eliminate redundant coding.
+    "no-magic-numbers": false,                  // To handle numerical values directly like HTTP status code.
+    "no-use-before-declare": false,             // To keep readability by declaring lower importance(like private function) at low position in file.
+    "no-void-expression": false,                // To take advantage of JavaScript's flexibility.
+    "object-literal-sort-keys": false,          // To prioritize semantic order over alphabetical order. (e.g. prefer "id, name, email" to "email, id, name")
+    "strict-boolean-expressions": false,        // To take advantage of JavaScript's flexibility.
+
+    // Items to customize Lint settings
+    "file-name-casing": [ true, "kebab-case" ],                                                   // To prevent capitalization problem between Windows and Linux.
+    "interface-name": [ true, "never-prefix" ],                                                   // To prevent naming as a marker.
+    "member-ordering": [ true, { "order": [ "static-field", "instance-field", "constructor" ]}],  // To keep readability by declaring lower importance(like private function) at low position in file.
+    "no-consecutive-blank-lines": [ true, 2 ],                                                    // Accept multiple line breaks to make code block meaningful.
+    "no-submodule-imports": [ true, "~" ],                                                        // Allow path aliases of owning source.
+    "no-unnecessary-class": [ true, "allow-static-only" ],                                        // Allow static classes to prefer class type definition from function expressions.
+    "trailing-comma": [ true, { "multiline": "never", "singleline": "never" }],                   // To fit in JSON syntax.
+
+    // By the coding style
+    "max-line-length": [ true, { "limit": 140, "ignore-pattern": "^import|logger\\.|//" }],
+    "quotemark": [ true, "single", "avoid-escape", "avoid-template" ],
+    "typedef": [ true, "call-signature", "arrow-call-signature", "parameter", "arrow-parameter", "property-declaration", "object-destructuring", "array-destructuring" ], // Remove "variable-declaration", "member-variable-declaration", by type inference works
+    "completed-docs": [ true, {
+      "classes":      { "visibilities": [ "exported" ],            "tags": { "content": { "see": [ "#.*" ]}, "existence": [ "inheritdoc" ]}},
+      "enums":        { "visibilities": [ "exported" ]},
+      "enum-members": { "visibilities": [ "exported" ]},
+      "functions":    { "visibilities": [ "exported" ]},
+      "interfaces":   { "visibilities": [ "exported" ],            "tags": { "content": { "see": [ "#.*" ]}, "existence": [ "inheritdoc" ]}},
+      "methods":      { "privacies":    [ "public", "protected" ], "tags": { "content": { "see": [ "#.*" ]}, "existence": [ "inheritdoc" ]}},
+      "namespaces":   { "visibilities": [ "exported" ]},
+      "properties":   { "privacies":    [ "public", "protected" ]},
+      "types":        { "visibilities": [ "exported" ]},
+      "variables":    { "visibilities": [ "exported" ]}
+    }]
+  }
+}
