@@ -3,11 +3,14 @@ import 'reflect-metadata';  // tslint:disable-line:no-import-side-effect ordered
 // tslint:disable-next-line: ordered-imports - 'cus to place side effect imports at the beginning of the line
 import { APIGatewayProxyEvent, Handler } from 'aws-lambda';
 import { container } from 'tsyringe';
-import { Env } from '~/config';
+import { Config, Env } from '~/config';
 import { Attachment, SlackApi, SlashCommand } from '~/external-api/slack';
+import { Geometry } from '~/external-api/yolp/common';
+import { ZipCodeApi, ZipCodeRequest } from '~/external-api/yolp/zip-code';
 
 const apis = {
-  slack: container.resolve(SlackApi)
+  slack: container.resolve(SlackApi),
+  zip: container.resolve(ZipCodeApi)
 };
 
 
@@ -28,8 +31,21 @@ export const handler: Handler<APIGatewayProxyEvent, void> = async (event: APIGat
   }
 
   try {
-    await apis.slack.response(command, { text: command.text });
+    const geo = await getGeometry(command.text);
+    if (!geo) { return apis.slack.response(command, { text: `場所の検索に失敗しました。\`${command.command} [郵便番号]\` を入力してください。` }); }
+
+    await apis.slack.response(command, { text: geo.coords });
   } catch (err) { await handleError(err as object, command); }
+};
+
+
+const getGeometry = async (text: string): Promise<Geometry | undefined> => {
+  const code = ZipCodeRequest.PATTERN_ZIP_CODE.exec(text);
+  if (code) {
+    const zip = await apis.zip.get(Config.REQUEST_ZIP(code[1]));
+    return zip.Feature && Object.assign(new Geometry(), zip.Feature[0].Geometry);
+  }
+  return undefined;
 };
 
 

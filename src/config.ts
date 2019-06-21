@@ -1,5 +1,6 @@
 // tslint:disable: completed-docs - 'cuz configuration variables
 import { name, version } from '~/../package.json';
+import { ZipCodeRequest } from '~/external-api/yolp/zip-code';
 
 
 /**
@@ -9,6 +10,8 @@ export class Config {
 
   public static readonly NAME = name;
   public static readonly VERSION = version;
+
+  public static REQUEST_ZIP(query: string): ZipCodeRequest { return { appid, query, detail: 'simple', results: 1 }; }
 }
 
 
@@ -31,3 +34,5 @@ export class Env {
 }
 
 export type Stage = 'dev' | 'qas' | 'prd';
+
+const appid = Env.YOLP_APP_ID;  // 'cuz to use property shorthand in object literal
