@@ -5,17 +5,21 @@ import { APIGatewayProxyEvent, Handler } from 'aws-lambda';
 import dayjs from 'dayjs';
 import { container } from 'tsyringe';
 import { Config, Env } from '~/config';
+import { AwsApi } from '~/external-api/aws';
 import { Attachment, Message, SlackApi, SlashCommand } from '~/external-api/slack';
 import { Geometry } from '~/external-api/yolp/common';
 import { GeoCodeApi } from '~/external-api/yolp/geo-code';
 import { AreaInfo, PlaceInfo, PlaceInfoApi } from '~/external-api/yolp/place-info';
+import { StaticMapApi } from '~/external-api/yolp/static-map';
 import { Weather, WeatherForecastApi } from '~/external-api/yolp/weather-forecast';
 import { ZipCodeApi, ZipCodeRequest } from '~/external-api/yolp/zip-code';
 
 const apis = {
+  aws: container.resolve(AwsApi),
   slack: container.resolve(SlackApi),
   zip: container.resolve(ZipCodeApi),
   geo: container.resolve(GeoCodeApi),
+  map: container.resolve(StaticMapApi),
   place: container.resolve(PlaceInfoApi),
   weather: container.resolve(WeatherForecastApi)
 };
@@ -43,6 +47,11 @@ export const handler: Handler<APIGatewayProxyEvent, void> = async (event: APIGat
 
     const place = await getPlace(geo);
     const weathers = await getWeathers(geo);
+
+    const filenames = Config.FILENAMES(geo, weathers.current);
+    await apis.map.get(Config.REQUEST_MAP(geo)).then(async (value: Buffer) => {
+      await apis.aws.s3PutObject(Env.S3_IMAGES_BUCKET, filenames.map, value, Config.CONTENT_TYPE_MAP);
+    });
 
     const message = createMessage(place, weathers);
     await apis.slack.response(command, message);
