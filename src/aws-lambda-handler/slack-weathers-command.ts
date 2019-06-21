@@ -122,10 +122,13 @@ const createMessage = ({ area, buildings }: Place, {current, after1h }: Weathers
   const icon = current.Rainfall === 0 ? '☀️' : current.Rainfall < 4 ? '🌦️' : '🌧️';
   const rain = `${dayjs(current.Date).format('H:mm')} の 降水強度 ${current.Rainfall} mm/h ⇒ ${after1h.Rainfall} mm/h`;
   const info = `🏙 ${ buildings.length < Config.SLACK_INFO_TEXT_LENGTH ? buildings : buildings.slice(0, Config.SLACK_INFO_TEXT_LENGTH)}...`;
-  const map  = `<http://${Env.S3_IMAGES_BUCKET}.s3-website-${Env.S3_IMAGES_REGION}.amazonaws.com/${filenames.map}?${ulid()}| >`;
+
+  const s3 = `https://${Env.S3_IMAGES_BUCKET}.s3-${Env.S3_IMAGES_REGION}.amazonaws.com`;
+  const chart = `<${s3}/${filenames.chart}?${ulid()}| >`;
+  const map   = `<${s3}/${filenames.map}?${ulid()}| >`;
 
   const message: Message = {
-    text: `${icon} ${area} ${rain}\n${info}${map}`,
+    text: `${icon} ${area} ${rain}\n${info}${chart}${map}`,
     response_type: 'in_channel'
   };
   console.debug('Reply: %s', JSON.stringify(message, undefined, 2));
