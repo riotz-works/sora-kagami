@@ -14,6 +14,8 @@ export class Config {
   public static readonly NAME = name;
   public static readonly VERSION = version;
 
+  public static readonly SLACK_INFO_TEXT_LENGTH = 24;
+
   public static REQUEST_ZIP(query: string): ZipCodeRequest { return { appid, query, detail: 'simple', results: 1 }; }
   public static REQUEST_GEO(query: string): GeoCodeRequest { return { appid, query, category: 'landmark,address,world', results: 1 }; }
   public static REQUEST_PLACE({ lon, lat }: Geometry): PlaceInfoRequest { return { appid, lon, lat }; }

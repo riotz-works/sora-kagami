@@ -4,7 +4,7 @@ import 'reflect-metadata';  // tslint:disable-line:no-import-side-effect ordered
 import { APIGatewayProxyEvent, Handler } from 'aws-lambda';
 import { container } from 'tsyringe';
 import { Config, Env } from '~/config';
-import { Attachment, SlackApi, SlashCommand } from '~/external-api/slack';
+import { Attachment, Message, SlackApi, SlashCommand } from '~/external-api/slack';
 import { Geometry } from '~/external-api/yolp/common';
 import { GeoCodeApi } from '~/external-api/yolp/geo-code';
 import { AreaInfo, PlaceInfo, PlaceInfoApi } from '~/external-api/yolp/place-info';
@@ -40,7 +40,8 @@ export const handler: Handler<APIGatewayProxyEvent, void> = async (event: APIGat
 
     const place = await getPlace(geo);
 
-    await apis.slack.response(command, { text: place.area });
+    const message = createMessage(place);
+    await apis.slack.response(command, message);
   } catch (err) { await handleError(err as object, command); }
 };
 
@@ -63,6 +64,18 @@ const getPlace = async (geo: Geometry): Promise<Place> => {
     area: areas.length !== 0 ? areas[0].Name : place.ResultSet.Address[1],
     buildings: place.ResultSet.Result.map((value: PlaceInfo) => value.Name).join(', ')
   };
+};
+
+
+const createMessage = ({ area, buildings }: Place): Message => {
+  const info = `🏙 ${ buildings.length < Config.SLACK_INFO_TEXT_LENGTH ? buildings : buildings.slice(0, Config.SLACK_INFO_TEXT_LENGTH)}...`;
+
+  const message: Message = {
+    text: `${area}\n${info}`,
+    response_type: 'in_channel'
+  };
+  console.debug('Reply: %s', JSON.stringify(message, undefined, 2));
+  return message;
 };
 
 
