@@ -21,6 +21,8 @@ export class Env {
 
   public static get SLACK_TOKENS(): string[] { return JSON.parse(process.env.SLACK_TOKENS || '[]') as string[]; }
 
+  public static get YOLP_APP_ID(): string { return process.env.YOLP_APP_ID || Env.fail('YOLP_APP_ID'); }
+
 
   private static fail(envVarName: string): never {
     console.error(`Environment variable "${envVarName}" is not set`);

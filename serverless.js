@@ -23,8 +23,9 @@ module.exports = {
     timeout: 29,
     logRetentionInDays: 7,
     environment: {
-      STAGE: '${ self:provider.stage }',
-      SLACK_TOKENS: '${ env:SLACK_TOKENS }'
+      STAGE:        '${ self:provider.stage }',
+      SLACK_TOKENS: '${ env:SLACK_TOKENS }',
+      YOLP_APP_ID:  '${ env:YOLP_APP_ID }'
     }
   },
 
