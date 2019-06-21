@@ -17,7 +17,15 @@ module.exports = {
   devtool: production ? '' : 'source-map',
   externals: [ nodeExternals() ],
   resolve: {
-    extensions: [ '.js', '.jsx', '.json' ]
+    extensions: [ '.js', '.jsx', '.json', '.ts', '.tsx' ],
+    alias: {
+      '~': path.join(__dirname, './src')
+    }
+  },
+  module: {
+    rules: [
+      { test: /\.tsx?$/, use: 'ts-loader' }
+    ]
   },
   output: {
     libraryTarget: 'commonjs',
