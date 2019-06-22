@@ -45,7 +45,7 @@ module.exports = {
   custom: {
     webpack: { packager: 'yarn', includeModules: { forceExclude: [ 'aws-sdk' ]}},
     stages: {
-      region: { dev: 'ap-northeast-1', qas: 'ap-northeast-1', prd: '' },
+      region: { dev: 'ap-northeast-1', qas: 'ap-northeast-1', prd: 'ap-northeast-1' },
       suffix: { dev: '-dev',           qas: '-qas',           prd: '' }
     },
     names: {

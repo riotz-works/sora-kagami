@@ -53,7 +53,7 @@ jobs:
     parameters:
       stage:
         type: enum
-        enum: [ "dev", "qas" ]
+        enum: [ "dev", "qas", "prd" ]
     steps:
       - attach_workspace:
           at: ~/workspace
@@ -86,3 +86,12 @@ workflows:
             branches:
               only:
                 - stable
+      - deploy:
+          stage: prd
+          context: sora-kagami
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - production
