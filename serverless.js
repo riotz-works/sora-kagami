@@ -50,8 +50,8 @@ module.exports = {
     },
     names: {
       lambda: {
-        systems:  '${ self:service }-systems${ self:custom.stages.suffix.${ self:provider.stage }}',
-        weathers: '${ self:service }-weathers${ self:custom.stages.suffix.${ self:provider.stage }}'
+        systems: '${ self:service }-systems${ self:custom.stages.suffix.${ self:provider.stage }}',
+        command: '${ self:service }-command${ self:custom.stages.suffix.${ self:provider.stage }}'
       },
       s3: {
         images: '${ self:service }-images${ self:custom.stages.suffix.${ self:provider.stage }}'
@@ -65,10 +65,10 @@ module.exports = {
       handler: 'src/aws-lambda-handler/systems.handler',
       events: [{ http: { path: 'version', method: 'get', cors: true }}]
     },
-    Weathers: {
-      name: '${ self:custom.names.lambda.weathers }',
-      handler: 'src/aws-lambda-handler/slack-weathers-command.handler',
-      events: [{ http: { path: 'weathers', method: 'post', cors: true, async: true }}]
+    Command: {
+      name: '${ self:custom.names.lambda.command }',
+      handler: 'src/aws-lambda-handler/sora-kagami-command.handler',
+      events: [{ http: { path: 'sora-kagami', method: 'post', cors: true, async: true }}]
     }
   },
 
