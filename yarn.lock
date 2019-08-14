@@ -332,10 +332,10 @@
   resolved "https://registry.yarnpkg.com/@types/aws-lambda/-/aws-lambda-8.10.27.tgz#33366bb26d8fb116f414e7c1855df5a0b6aa1d3d"
   integrity sha512-9QjcjORRtgG5KPVHWqGZ0F2Uo/ALUWQ5D7qfJEco0fEjoSbA908w05RXql7YPS72jQ1w6I+pr+8pQPqBPlYnSw==
 
-"@types/chart.js@^2.7.54":
-  version "2.7.54"
-  resolved "https://registry.yarnpkg.com/@types/chart.js/-/chart.js-2.7.54.tgz#d50c0db14f45d9de6eaa2820d5feb26cea68caf7"
-  integrity sha512-BxIUR4mfk0zOqOPEu4gxLP5herra6INQLyFmgVE6JVRNNB+r36g2cd67nDUEEdD/EShZvaR33xausxOGv1+nbw==
+"@types/chart.js@^2.7.57":
+  version "2.7.57"
+  resolved "https://registry.yarnpkg.com/@types/chart.js/-/chart.js-2.7.57.tgz#6f4f7a588de48c2f82e67608b8e1f01e91be38f7"
+  integrity sha512-kVYcxX7PdTcUrmd2Q0UjN1U0YDO1FfZ8QCDvahGmI3gvwySZYwtcRANiduOI3st6Va2T/yBBLsoHt+Gl3O7Ztw==
 
 "@types/hex-rgba@^1.0.0":
   version "1.0.0"
