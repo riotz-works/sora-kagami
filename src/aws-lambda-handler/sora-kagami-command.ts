@@ -45,6 +45,8 @@ export const handler: Handler<APIGatewayProxyEvent, void> = async (event: APIGat
   }
 
   try {
+    if (!command.text) { return apis.slack.response(command, { text: `場所が指定されていません。\`${command.command} [郵便番号 または 地名]\` を入力してください。` }); }
+
     const geo = await getGeometry(command.text);
     if (!geo) { return apis.slack.response(command, { text: `場所の検索に失敗しました。\`${command.command} [郵便番号 または 地名]\` を入力してください。` }); }
 
