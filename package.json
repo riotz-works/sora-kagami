@@ -16,7 +16,7 @@
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.31",
-    "@types/chart.js": "^2.8.1",
+    "@types/chart.js": "^2.8.2",
     "@types/hex-rgba": "^1.0.0",
     "@types/node": "^12.7.2",
     "rimraf": "^3.0.0",
