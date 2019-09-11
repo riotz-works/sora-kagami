@@ -5705,10 +5705,10 @@ tsutils@^2.29.0:
   dependencies:
     tslib "^1.8.1"
 
-tsyringe@^3.3.0:
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/tsyringe/-/tsyringe-3.3.0.tgz#0845302b1d12121f5451e9e73dfae7bfb9f4f252"
-  integrity sha512-XWaZBMbYEnSCi+V9XNyzgDPuDAPdRVQuk5C0aIAJLM3jD7Z/na1b5p+/FWzZ36HfQtweH5bUCdWFlHP7DBj22Q==
+tsyringe@^3.4.0:
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/tsyringe/-/tsyringe-3.4.0.tgz#76c9517b8db6b8fac38bc371694ae6545ee9576e"
+  integrity sha512-Ol5x1/mP4Q5vnsZGIYWGURe4CKmAqUz4uEGhew+NYp0sA5a6gbqw6/2C1gqde11fuDfiZ5F07dVeBdyGlhDCNg==
   dependencies:
     tslib "^1.9.3"
 
