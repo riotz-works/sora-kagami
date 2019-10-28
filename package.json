@@ -15,7 +15,7 @@
     "ulid": "^2.3.0"
   },
   "devDependencies": {
-    "@types/aws-lambda": "^8.10.33",
+    "@types/aws-lambda": "^8.10.34",
     "@types/chart.js": "^2.8.7",
     "@types/hex-rgba": "^1.0.0",
     "@types/node": "^12.11.1",
