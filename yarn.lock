@@ -448,10 +448,10 @@
   resolved "https://registry.yarnpkg.com/@types/aws-lambda/-/aws-lambda-8.10.36.tgz#62a3d9babb34ea44ceddd6b7ab7386329e902600"
   integrity sha512-oO7VHmHsr2V3U5uEVNfxO+h6nfDQ5kb8NPotwkzpYKnrW+cJ5BBRLdD7DAWx/7fEtMFnGg6L224Zn4tUxmnzcw==
 
-"@types/chart.js@^2.9.2":
-  version "2.9.2"
-  resolved "https://registry.yarnpkg.com/@types/chart.js/-/chart.js-2.9.2.tgz#0629c49d791df1347a163aa412d665218f7be667"
-  integrity sha512-jgSW2LSsrgLLzfxDhJfDLst4ifH3IhHqbE1qXrqigHyhDz1zGHL3PSvIxwcoQvCAcq8kMeVcTkpiODChAy/QaA==
+"@types/chart.js@^2.9.3":
+  version "2.9.3"
+  resolved "https://registry.yarnpkg.com/@types/chart.js/-/chart.js-2.9.3.tgz#eb9154420eb63abcd6fb827e15a812c851ed0c18"
+  integrity sha512-R5F39GIQ54fZJ04pmgbLrx0/dOEhyS8LRQNdlAmZd5zWZiFJ0v9zNNSBJ9WOTBRrMjeV53s0qhnRRvhcs6dfyQ==
 
 "@types/hex-rgba@^1.0.0":
   version "1.0.0"
