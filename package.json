@@ -18,7 +18,7 @@
     "@types/aws-lambda": "^8.10.37",
     "@types/chart.js": "^2.9.4",
     "@types/hex-rgba": "^1.0.0",
-    "@types/node": "^12.12.14",
+    "@types/node": "^12.12.17",
     "rimraf": "^3.0.0",
     "serverless": "^1.59.2",
     "serverless-offline": "^5.12.1",
