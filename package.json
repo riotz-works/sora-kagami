@@ -6,7 +6,7 @@
   "dependencies": {
     "axios": "^0.19.1",
     "chart.js": "^2.9.3",
-    "chartjs-node-canvas": "^2.4.0",
+    "chartjs-node-canvas": "^2.4.1",
     "dayjs": "^1.8.17",
     "hex-rgba": "^1.0.2",
     "reflect-metadata": "^0.1.13",

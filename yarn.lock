@@ -1330,10 +1330,10 @@ chartjs-color@^2.1.0:
     chartjs-color-string "^0.6.0"
     color-convert "^0.5.3"
 
-chartjs-node-canvas@^2.4.0:
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/chartjs-node-canvas/-/chartjs-node-canvas-2.4.0.tgz#5068c86cf7a2f49192c0b5f8c35ce8026771ff43"
-  integrity sha512-wzKwaHBCUynQDG60YMFDQicN9ceneldMCHfGIIllcbCeG9unPY9XmlQYa3oyhtHST0hJRikqUrZGKCSe5hPjkQ==
+chartjs-node-canvas@^2.4.1:
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/chartjs-node-canvas/-/chartjs-node-canvas-2.4.1.tgz#e62a565517a7bc888bdd2683df2e7603f1d626e0"
+  integrity sha512-axIq5SrXDV+U48zr3Ri1q0c7qwSnlyHmbREtCKTMSf7EFMyL+Rwv8zwMsmslgzzH/TFRu9qzV4JniMQfGpI6fw==
   dependencies:
     canvas "^2.4.1"
 
