@@ -456,10 +456,10 @@
   resolved "https://registry.yarnpkg.com/@types/aws-lambda/-/aws-lambda-8.10.39.tgz#da83cf7a82695a8904e383d705829fecf96b7db2"
   integrity sha512-6qxQ4wS636AapVvDbzltI/Xn69QWxjcvohvxd/+MTWzdE9Vqz1xgERr38jEbBGEkyyG8y819nAhjGsiY6KNh1A==
 
-"@types/chart.js@^2.9.7":
-  version "2.9.7"
-  resolved "https://registry.yarnpkg.com/@types/chart.js/-/chart.js-2.9.7.tgz#09b60cc2e8039a1854d49dd880f9d2e484d7c027"
-  integrity sha512-T+oRIWLPu6cXWYSTwihkeZLKk5V4U4O09Uqx4padQto1XVH7YafX4Z4YV1OIWnKbkqMn/4Cuj9ZwWcG6fnKK3A==
+"@types/chart.js@^2.9.9":
+  version "2.9.9"
+  resolved "https://registry.yarnpkg.com/@types/chart.js/-/chart.js-2.9.9.tgz#a8f56d80eb35b4e364674b8c1819d57fbb8865f1"
+  integrity sha512-+gbONppB+lRJ9H6hSZ9kCDcM+d+5v4ceYuSjEBjxQnI/9iubprWTYV1XUAtF/D5RnAbtpHU/U+DsrlEt0KYEaQ==
 
 "@types/hex-rgba@^1.0.0":
   version "1.0.0"
