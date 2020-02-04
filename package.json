@@ -19,7 +19,7 @@
     "@types/chart.js": "^2.9.12",
     "@types/hex-rgba": "^1.0.0",
     "@types/node": "^13.7.0",
-    "rimraf": "^3.0.0",
+    "rimraf": "^3.0.1",
     "serverless": "^1.61.2",
     "serverless-offline": "^5.12.1",
     "serverless-webpack": "^5.3.1",
