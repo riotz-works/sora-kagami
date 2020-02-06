@@ -1,6 +1,4 @@
-import 'reflect-metadata';  // tslint:disable-line:no-import-side-effect ordered-imports - 'cuz to use ES7 Reflect API with tsyringe
-
-// tslint:disable-next-line: ordered-imports - 'cus to place side effect imports at the beginning of the line
+import 'reflect-metadata';
 import { APIGatewayProxyEvent, Handler } from 'aws-lambda';
 import { ChartConfiguration } from 'chart.js';
 import dayjs from 'dayjs';
@@ -38,7 +36,7 @@ const apis = {
 export const handler: Handler<APIGatewayProxyEvent, void> = async (event: APIGatewayProxyEvent): Promise<void> => {
   console.debug('Starting Lambda handler: event=%s', JSON.stringify(event));
 
-  // tslint:disable-next-line: no-any - 'cus to parse non-JSON, JavaScript object literal like strings by Slack
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const command = event.body as any as SlashCommand;
   if (Env.SLACK_TOKENS.length !== 0 && !Env.SLACK_TOKENS.includes(command.token)) {
     return console.error('Forbidden: team=%s, command=%s', command.team_domain, JSON.stringify(command, undefined, 2));
@@ -53,35 +51,36 @@ export const handler: Handler<APIGatewayProxyEvent, void> = async (event: APIGat
     const place = await getPlace(geo);
     const weathers = await getWeathers(geo);
 
-    const filenames = Config.FILENAMES(geo, weathers.current);
+    const filenames = Config.filenames(geo, weathers.current);
     await Promise.all([
-      apis.map.get(Config.REQUEST_MAP(geo)).then(async (value: Buffer) => {
+      apis.map.get(Config.requestMap(geo)).then(async (value: Buffer) => {
         await apis.aws.s3PutObject(Env.S3_IMAGES_BUCKET, filenames.map, value, Config.CONTENT_TYPE_MAP);
       }),
-      Config.CHART_CANVAS().renderToBuffer(createChartOps(weathers.data), Config.CONTENT_TYPE_CHART).then(async (value: Buffer) => {
+      Config.chartCanvas().renderToBuffer(createChartOps(weathers.data), Config.CONTENT_TYPE_CHART).then(async (value: Buffer) => {
         await apis.aws.s3PutObject(Env.S3_IMAGES_BUCKET, filenames.chart, value, Config.CONTENT_TYPE_CHART);
-      })]
-    );
+      })
+    ]);
 
     const message = createMessage(place, weathers, filenames, geo);
     await apis.slack.response(command, message);
   } catch (err) { await handleError(err as object, command); }
+  return Promise.resolve();
 };
 
 
 const getGeometry = async (text: string): Promise<Geometry | undefined> => {
   const code = ZipCodeRequest.PATTERN_ZIP_CODE.exec(text);
-  if (code) {
-    const zip = await apis.zip.get(Config.REQUEST_ZIP(code[1]));
+  if (code && code.groups) {
+    const zip = await apis.zip.get(Config.requestZip(code.groups.zip));
     return zip.Feature && Object.assign(new Geometry(), zip.Feature[0].Geometry);
   }
-  const geo = await apis.geo.get(Config.REQUEST_GEO(text));
+  const geo = await apis.geo.get(Config.requestGeo(text));
   return geo.Feature && Object.assign(new Geometry(), geo.Feature[0].Geometry);
 };
 
-interface Place { area: string; buildings: string; }  // tslint:disable-line: completed-docs - 'cuz internally used data model
+interface Place { area: string; buildings: string }
 const getPlace = async (geo: Geometry): Promise<Place> => {
-  const place = await apis.place.get(Config.REQUEST_PLACE(geo));
+  const place = await apis.place.get(Config.requestPlace(geo));
   const areas = place.ResultSet.Area.filter((value: AreaInfo) => value.Type === 2);
   return {
     area: areas.length !== 0 ? areas[0].Name : place.ResultSet.Address[1],
@@ -89,9 +88,9 @@ const getPlace = async (geo: Geometry): Promise<Place> => {
   };
 };
 
-interface Weathers { current: Weather; after1h: Weather; data: Weather[]; }  // tslint:disable-line: completed-docs - 'cuz internally used data model
+interface Weathers { current: Weather; after1h: Weather; data: Weather[] }
 const getWeathers = async (geo: Geometry): Promise<Weathers> => {
-  const data = (await apis.weather.get(Config.REQUEST_WEATHER(geo))).Feature[0].Property.WeatherList.Weather;
+  const data = (await apis.weather.get(Config.requestWeather(geo))).Feature[0].Property.WeatherList.Weather;
   return {
     current: data[0],
     after1h: data.slice(-1)[0],
@@ -115,15 +114,14 @@ const createChartOps = (weathers: Weather[]): ChartConfiguration => {
     }
   };
 };
-const createChartColor = (weathers: Weather[], opacity: number): string[] =>
-  weathers.map((value: Weather) => hexToRgba(WeatherForecastApi.getLevelColor(value.Rainfall), opacity));
+const createChartColor = (weathers: Weather[], opacity: number): string[] => weathers.map((value: Weather) => hexToRgba(WeatherForecastApi.getLevelColor(value.Rainfall), opacity));
 
 
-interface Filenames { map: string; chart: string; }  // tslint:disable-line: completed-docs - 'cuz internally used data model
-const createMessage = ({ area, buildings }: Place, {current, after1h }: Weathers, filenames: Filenames, geo: Geometry): Message => {
+interface Filenames { map: string; chart: string }
+const createMessage = ({ area, buildings }: Place, { current, after1h }: Weathers, filenames: Filenames, geo: Geometry): Message => {
   const icon = current.Rainfall === 0 ? '☀️' : current.Rainfall < 4 ? '🌦️' : '🌧️';
   const rain = `${dayjs(current.Date).format('H:mm')} の 降水強度 ${current.Rainfall} mm/h ⇒ ${after1h.Rainfall} mm/h`;
-  const info = `🏙 ${ buildings.length < Config.SLACK_INFO_TEXT_LENGTH ? buildings : buildings.slice(0, Config.SLACK_INFO_TEXT_LENGTH)}...`;
+  const info = `🏙 ${buildings.length < Config.SLACK_INFO_TEXT_LENGTH ? buildings : buildings.slice(0, Config.SLACK_INFO_TEXT_LENGTH)}...`;
 
   const s3 = `https://${Env.S3_IMAGES_BUCKET}.s3-${Env.S3_IMAGES_REGION}.amazonaws.com`;
   const chart = `<${s3}/${filenames.chart}?${ulid()}| >`;

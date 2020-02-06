@@ -10,11 +10,11 @@ import { Config } from '~/config';
  */
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   console.debug('Starting Lambda handler: event=%s', JSON.stringify(event));
-  return {
+  return Promise.resolve({
     statusCode: 200,
     body: JSON.stringify({
       name: Config.NAME,
       version: Config.VERSION
     })
-  };
+  });
 };
