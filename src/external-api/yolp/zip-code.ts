@@ -28,14 +28,13 @@ export class ZipCodeApi {
 }
 
 
-// tslint:disable: completed-docs - 'cuz model definition of external API, for details refer to the official document
 /**
  * Request parameter of YOLP ZipCode Search API.
  * @see https://developer.yahoo.co.jp/webapi/map/openlocalplatform/v1/zipcodesearch.html#request-param
  */
 export class ZipCodeRequest {
 
-  public static readonly PATTERN_ZIP_CODE = /(\d{3}-?\d{4})|(\d{3})/g;
+  public static readonly PATTERN_ZIP_CODE = /(?<zip>\d{3}-?\d{4}?)/gu;
 
   public appid!: string;
 

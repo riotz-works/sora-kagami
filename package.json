@@ -3,11 +3,22 @@
   "group": "riotz",
   "version": "1.0.0",
   "private": true,
+  "scripts": {
+    "clean": "rimraf .serverless .webpack",
+    "setup": "yarn install --ignore-optional",
+    "dev": "serverless offline start",
+    "build": "yarn serverless package",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
+    "deploy": "serverless deploy",
+    "contributors:add": "all-contributors add",
+    "contributors:generate": "all-contributors generate"
+  },
   "dependencies": {
     "axios": "^0.19.2",
     "chart.js": "^2.9.3",
-    "chartjs-node-canvas": "^2.4.0",
-    "dayjs": "^1.8.17",
+    "chartjs-node-canvas": "^2.4.2",
+    "dayjs": "^1.8.20",
     "hex-rgba": "^1.0.2",
     "reflect-metadata": "^0.1.13",
     "source-map-support": "^0.5.16",
@@ -19,26 +30,21 @@
     "@types/chart.js": "^2.9.12",
     "@types/hex-rgba": "^1.0.0",
     "@types/node": "^13.7.0",
+    "@typescript-eslint/eslint-plugin": "^2.19.0",
+    "@typescript-eslint/parser": "^2.19.0",
+    "all-contributors-cli": "^6.13.0",
+    "eslint": "^6.8.0",
     "rimraf": "^3.0.1",
-    "serverless": "^1.61.2",
+    "serverless": "^1.62.0",
     "serverless-offline": "^5.12.1",
     "serverless-webpack": "^5.3.1",
     "ts-loader": "^6.2.1",
-    "tslint": "^6.0.0",
-    "tslint-loader": "^3.5.4",
     "typescript": "^3.7.5",
     "webpack": "^4.41.5",
     "webpack-node-externals": "^1.7.2"
   },
-  "scripts": {
-    "clean": "rimraf .serverless",
-    "setup": "yarn install --ignore-optional",
-    "dev": "serverless offline start",
-    "lint": "tslint -p . --format verbose",
-    "deploy": "serverless deploy"
-  },
   "engines": {
-    "node": "8.10"
+    "node": "12.x"
   },
   "homepage": "https://github.com/riotz-works/sora-kagami#readme",
   "repository": {

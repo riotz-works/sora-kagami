@@ -1,4 +1,3 @@
-// tslint:disable: completed-docs - 'cuz configuration variables
 import { CanvasRenderService } from 'chartjs-node-canvas';
 import dayjs from 'dayjs';
 import { homepage, name, version } from '~/../package.json';
@@ -27,17 +26,17 @@ export class Config {
   public static readonly ALPHA_BORDER = 100;
   public static readonly ALPHA_BACKGROUND = 60;
 
-  public static REQUEST_ZIP(query: string): ZipCodeRequest { return { appid, query, detail: 'simple', results: 1 }; }
-  public static REQUEST_GEO(query: string): GeoCodeRequest { return { appid, query, category: 'landmark,address,world', results: 1 }; }
-  public static REQUEST_PLACE({ lon, lat }: Geometry): PlaceInfoRequest { return { appid, lon, lat }; }
-  public static REQUEST_WEATHER({ coords }: Geometry): WeatherForecastRequest { return { appid, coordinates: coords }; }
-  public static REQUEST_MAP({ lon, lat }: Geometry): StaticMapRequest {
+  public static requestZip(query: string): ZipCodeRequest { return { appid, query, detail: 'simple', results: 1 }; }
+  public static requestGeo(query: string): GeoCodeRequest { return { appid, query, category: 'landmark,address,world', results: 1 }; }
+  public static requestPlace({ lon, lat }: Geometry): PlaceInfoRequest { return { appid, lon, lat }; }
+  public static requestWeather({ coords }: Geometry): WeatherForecastRequest { return { appid, coordinates: coords }; }
+  public static requestMap({ lon, lat }: Geometry): StaticMapRequest {
     return { appid, lon, lat, z: 13, style: 'base:railway', overlay: 'type:rainfall', output: 'jpg', width: 600, height: 600 };
   }
 
-  public static CHART_CANVAS(): CanvasRenderService { return new CanvasRenderService(400, 120); }
+  public static chartCanvas(): CanvasRenderService { return new CanvasRenderService(400, 120); }
 
-  public static FILENAMES(geo: Geometry, { Date }: Weather): { map: string; chart: string } {
+  public static filenames(geo: Geometry, { Date }: Weather): { map: string; chart: string } {
     const prefix = `${dayjs(Date).toISOString()}-${geo.coords.replace(',', '-')}`;
     return {
       map: `${prefix}-map.jpg`,

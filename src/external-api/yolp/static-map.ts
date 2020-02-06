@@ -24,7 +24,6 @@ export class StaticMapApi {
 }
 
 
-// tslint:disable: completed-docs variable-name - 'cuz model definition of external API, for details refer to the official document
 /**
  * Request parameter of YOLP StaticMap API.
  * @see https://developer.yahoo.co.jp/webapi/map/openlocalplatform/v1/static.html#request-param

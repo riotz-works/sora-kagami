@@ -23,7 +23,6 @@ export class SlackApi {
 }
 
 
-// tslint:disable: completed-docs - 'cuz model definition of external API, for details refer to the official document
 /**
  * Receiving model of Slash command.
  * @see https://api.slack.com/slash-commands#app_command_handling

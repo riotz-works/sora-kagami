@@ -49,7 +49,6 @@ export class WeatherForecastApi {
 }
 
 
-// tslint:disable: completed-docs - 'cuz model definition of external API, for details refer to the official document
 /**
  * Request parameter of YOLP Weather forecast API.
  * @see https://developer.yahoo.co.jp/webapi/map/openlocalplatform/v1/weather.html#request-param
