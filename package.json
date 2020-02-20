@@ -29,7 +29,7 @@
     "@types/aws-lambda": "^8.10.43",
     "@types/chart.js": "^2.9.14",
     "@types/hex-rgba": "^1.0.0",
-    "@types/node": "^13.7.2",
+    "@types/node": "^13.7.4",
     "@typescript-eslint/eslint-plugin": "^2.20.0",
     "@typescript-eslint/parser": "^2.20.0",
     "all-contributors-cli": "^6.13.0",
