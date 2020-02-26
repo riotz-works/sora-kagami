@@ -1483,12 +1483,13 @@ chartjs-color@^2.1.0:
     chartjs-color-string "^0.6.0"
     color-convert "^1.9.3"
 
-chartjs-node-canvas@^2.4.2:
-  version "2.4.2"
-  resolved "https://registry.yarnpkg.com/chartjs-node-canvas/-/chartjs-node-canvas-2.4.2.tgz#4b5c2052c137b1b61c2721a75f92d9b0d9f18531"
-  integrity sha512-DTi9X/LdAmLjiD+Qw4NWL2SYmEmPv8eGti39Peh4vRnWVNBNIFV5/nBDbihiSiMZPpEKi8Uovd6PS8KnQAm6ug==
+chartjs-node-canvas@^3.0.3:
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/chartjs-node-canvas/-/chartjs-node-canvas-3.0.3.tgz#c83d9cd6a066e0401260118135bb8cceb2376a57"
+  integrity sha512-w3PzBpWUJ1xxOdpilZ9+jEbn8WV/nKBZxbhDwkT9qczcTU8CJefDZ+f7vYY5qeuIFX8VlUpaM+XrkHXE+aICYg==
   dependencies:
     canvas "^2.6.1"
+    tslib "^1.10.0"
 
 child-process-ext@^2.1.0:
   version "2.1.0"
@@ -6354,10 +6355,10 @@ tsconfig@^6.0.0:
     strip-bom "^3.0.0"
     strip-json-comments "^2.0.0"
 
-tslib@^1.8.1, tslib@^1.9.0, tslib@^1.9.3:
-  version "1.10.0"
-  resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.10.0.tgz#c3c19f95973fb0a62973fb09d90d961ee43e5c8a"
-  integrity sha512-qOebF53frne81cf0S9B41ByenJ3/IuH8yJKngAX35CmiZySA0khhkovshKK+jGCaMnVomla7gVlIcc3EvKPbTQ==
+tslib@^1.10.0, tslib@^1.8.1, tslib@^1.9.0, tslib@^1.9.3:
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.11.0.tgz#f1f3528301621a53220d58373ae510ff747a66bc"
+  integrity sha512-BmndXUtiTn/VDDrJzQE7Mm22Ix3PxgLltW9bSNLoeCY31gnG2OPx0QqJnuc9oMIKioYrz487i6K9o4Pdn0j+Kg==
 
 tsutils@^3.17.1:
   version "3.17.1"
