@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.46",
-    "@types/chart.js": "^2.9.14",
+    "@types/chart.js": "^2.9.15",
     "@types/hex-rgba": "^1.0.0",
     "@types/node": "^13.7.4",
     "@typescript-eslint/eslint-plugin": "^2.22.0",
