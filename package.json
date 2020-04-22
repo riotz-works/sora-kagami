@@ -21,7 +21,7 @@
     "dayjs": "^1.8.25",
     "hex-rgba": "^1.0.2",
     "reflect-metadata": "^0.1.13",
-    "source-map-support": "^0.5.17",
+    "source-map-support": "^0.5.18",
     "tsyringe": "^4.1.0",
     "ulid": "^2.3.0"
   },
