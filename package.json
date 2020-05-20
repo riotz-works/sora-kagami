@@ -36,7 +36,7 @@
     "eslint": "^7.0.0",
     "rimraf": "^3.0.2",
     "serverless": "^1.71.3",
-    "serverless-offline": "^6.1.5",
+    "serverless-offline": "^6.1.7",
     "serverless-webpack": "^5.3.2",
     "ts-loader": "^7.0.4",
     "typescript": "^3.9.2",
