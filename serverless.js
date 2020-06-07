@@ -28,6 +28,7 @@ module.exports = {
       Resource: 'arn:aws:s3:::${self:custom.names.s3.images}/*'
     }],
     environment: {
+      AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1,
       STAGE:            '${ self:provider.stage }',
       S3_IMAGES_REGION: '${ self:provider.region }',
       S3_IMAGES_BUCKET: '${ self:custom.names.s3.images }',
