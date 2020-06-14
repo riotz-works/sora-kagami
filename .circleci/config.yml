@@ -22,8 +22,7 @@ commands:
 
 jobs:
   setup:
-    executor:
-      name: default
+    executor: default
     steps:
       - run:
           name: System information
@@ -45,40 +44,34 @@ jobs:
             - ~/.cache/yarn
       - persist
   lint:
-    executor:
-      name: default
+    executor: default
     steps:
       - attach
       - run:
           name: Lint
           command: |
-            yarn lint --format junit --output-file ./reports/eslint/results.xml
+            yarn lint --format junit --output-file reports/eslint/results.xml
       - store_artifacts:
-          path: ./reports
+          path: reports
       - store_test_results:
-          path: ./reports
+          path: reports
   build:
-    executor:
-      name: default
+    executor: default
     steps:
       - attach
       - run:
           name: Build
           command: |
             yarn build
-      - store_artifacts:
-          path: ./dist
   deploy:
-    executor:
-      name: default
+    executor: default
     parameters:
       stage:
         type: enum
         enum: [ "dev", "qas", "prd" ]
     steps:
       - attach
-      - run:
-          name: Deploy
+      - deploy:
           command: |
             yarn deploy --stage << parameters.stage >>
 
