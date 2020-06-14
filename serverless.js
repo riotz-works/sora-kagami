@@ -17,6 +17,7 @@ module.exports = {
     stage: '${opt:stage, "dev"}',
     region: '${opt:region, self:custom.stages.region.${self:provider.stage}}',
     runtime: `nodejs${pkg.engines.node}`,
+    apiName: '${self:service}${self:custom.stages.suffix.${self:provider.stage}}',
     memorySize: 256,
     timeout: 29,
     logRetentionInDays: 7,
@@ -24,7 +25,6 @@ module.exports = {
       name: '${opt:bucket, "x-sls-artifacts-' + pkg.group + '-${self:provider.region}"}',  /* eslint-disable-line prefer-template */  // 'cuz syntax of the serverless framework
       serverSideEncryption: 'AES256'
     },
-    apiName: '${self:service}${self:custom.stages.suffix.${self:provider.stage}}',
     iamRoleStatements: [{
       Effect: 'Allow',
       Action: [ 's3:PutObject' ],
