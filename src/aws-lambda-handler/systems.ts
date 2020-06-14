@@ -8,7 +8,7 @@ import { Config } from '~/config';
  * @param event – API Gateway "event".
  * @see http://docs.aws.amazon.com/lambda/latest/dg/nodejs-prog-model-handler.html
  */
-export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
+export const handler: APIGatewayProxyHandler = (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   console.debug('Starting Lambda handler: event=%s', JSON.stringify(event));
   return Promise.resolve({
     statusCode: 200,

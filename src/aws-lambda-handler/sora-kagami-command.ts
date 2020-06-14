@@ -135,7 +135,7 @@ const createMessage = ({ area, buildings }: Place, { current, after1h }: Weather
 
   const message: Message = {
     text: `${icon} ${area} ${rain}\n${info}${chart}${map}${credit}\n${note}`,
-    response_type: 'in_channel'
+    response_type: 'in_channel' /* eslint-disable-line @typescript-eslint/camelcase */  // 'cuz key name defined by Slack API.
   };
   console.debug('Reply: %s', JSON.stringify(message, undefined, 2));
   return message;
