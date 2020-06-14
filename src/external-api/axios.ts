@@ -19,7 +19,7 @@ export class AxiosHttpClient {
    * @param url URL to send HTTP GET request.
    * @param params Request parameter.
    */
-  public async get<T>(url: string, params?: object): Promise<AxiosResponse<T>> {
+  public get<T>(url: string, params?: object): Promise<AxiosResponse<T>> {
     return this.axios.get<T>(url, { params });
   }
 
@@ -29,7 +29,7 @@ export class AxiosHttpClient {
    * @param url URL to send HTTP POST request.
    * @param data Request body.
    */
-  public async post<T>(url: string, data?: object): Promise<AxiosResponse<T>> {
+  public post<T>(url: string, data?: object): Promise<AxiosResponse<T>> {
     return this.axios.post<T>(url, data);
   }
 
@@ -39,7 +39,7 @@ export class AxiosHttpClient {
    * @param url URL to send HTTP GET request.
    * @param params Request parameter.
    */
-  public async stream(url: string, params?: object): Promise<AxiosResponse<Buffer>> {
+  public stream(url: string, params?: object): Promise<AxiosResponse<Buffer>> {
     return this.axios.get<Buffer>(url, { params, responseType: 'stream' });
   }
 }
