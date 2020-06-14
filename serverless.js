@@ -1,3 +1,6 @@
+/* eslint-disable no-multi-spaces */              // 'cuz clarify paired structure
+/* eslint-disable no-template-curly-in-string */  // 'cuz syntax of the serverless framework
+
 // Command line options
 // --stage:       Required System Landscape name, default is 'dev' (Choice: [dev | qas | prd], e.g. --stage dev)
 // --region:      Optional, default is determined by the value of `stage` (e.g. --region ap-northeast-1)
@@ -11,30 +14,30 @@ module.exports = {
   service: pkg.name,
   provider: {
     name: 'aws',
-    stage: '${ opt:stage, "dev" }',
-    region: '${ opt:region, self:custom.stages.region.${ self:provider.stage }}',
-    deploymentBucket: {
-      name: '${ opt:bucket, "x-sls-artifacts-' + pkg.group + '-${ self:provider.region }" }',
-      serverSideEncryption: 'AES256'
-    },
-    apiName: '${ self:service }${ self:custom.stages.suffix.${ self:provider.stage }}',
-    runtime: `nodejs${ pkg.engines.node }`,
-    memorySize: 128,
+    stage: '${opt:stage, "dev"}',
+    region: '${opt:region, self:custom.stages.region.${self:provider.stage}}',
+    runtime: `nodejs${pkg.engines.node}`,
+    memorySize: 256,
     timeout: 29,
     logRetentionInDays: 7,
+    deploymentBucket: {
+      name: '${opt:bucket, "x-sls-artifacts-' + pkg.group + '-${self:provider.region}"}',  /* eslint-disable-line prefer-template */  // 'cuz syntax of the serverless framework
+      serverSideEncryption: 'AES256'
+    },
+    apiName: '${self:service}${self:custom.stages.suffix.${self:provider.stage}}',
     iamRoleStatements: [{
       Effect: 'Allow',
       Action: [ 's3:PutObject' ],
-      Resource: 'arn:aws:s3:::${self:custom.names.s3.images}/*'
+      Resource: 'arn:aws:s3:::${self:custom.names.s3-images}/*'
     }],
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1,
-      STAGE:            '${ self:provider.stage }',
-      S3_IMAGES_REGION: '${ self:provider.region }',
-      S3_IMAGES_BUCKET: '${ self:custom.names.s3.images }',
-      SLACK_TOKENS:     '${ env:SLACK_TOKENS }',
-      YOLP_APP_ID:      '${ env:YOLP_APP_ID }',
-      NOTE:             '${ env:NOTE }'
+      STAGE:            '${self:provider.stage}',
+      S3_IMAGES_REGION: '${self:provider.region}',
+      S3_IMAGES_BUCKET: '${self:custom.names.s3-images}',
+      SLACK_TOKENS:     '${env:SLACK_TOKENS}',
+      YOLP_APP_ID:      '${env:YOLP_APP_ID}',
+      NOTE:             '${env:NOTE}'
     }
   },
 
@@ -44,30 +47,26 @@ module.exports = {
   ],
 
   custom: {
-    webpack: { packager: 'yarn', includeModules: { forceExclude: [ 'aws-sdk' ]}},
+    webpack: { packager: 'yarn', webpackConfig: './deploy/webpack.config.js', includeModules: { forceExclude: [ 'aws-sdk' ]}},
     stages: {
       region: { dev: 'ap-northeast-1', qas: 'ap-northeast-1', prd: 'ap-northeast-1' },
       suffix: { dev: '-dev',           qas: '-qas',           prd: '' }
     },
     names: {
-      lambda: {
-        systems: '${ self:service }-systems${ self:custom.stages.suffix.${ self:provider.stage }}',
-        command: '${ self:service }-command${ self:custom.stages.suffix.${ self:provider.stage }}'
-      },
-      s3: {
-        images: '${ self:service }-images${ self:custom.stages.suffix.${ self:provider.stage }}'
-      }
+      'lambda-systems': '${self:service}-systems${self:custom.stages.suffix.${self:provider.stage}}',
+      'lambda-command': '${self:service}-command${self:custom.stages.suffix.${self:provider.stage}}',
+      's3-images': '${self:service}-images${self:custom.stages.suffix.${self:provider.stage}}'
     }
   },
 
   functions: {
     Systems: {
-      name: '${ self:custom.names.lambda.systems }',
-      handler: 'src/aws-lambda-handler/systems.handler',
+      name: '${self:custom.names.lambda-systems}',
+      handler: 'src/aws-lambda-handler/systems.handle',
       events: [{ http: { path: 'version', method: 'get', cors: true }}]
     },
     Command: {
-      name: '${ self:custom.names.lambda.command }',
+      name: '${self:custom.names.lambda-command}',
       handler: 'src/aws-lambda-handler/sora-kagami-command.handler',
       events: [{ http: { path: 'sora-kagami', method: 'post', cors: true, async: true }}]
     }
@@ -78,7 +77,7 @@ module.exports = {
       ImagesBucket: {
         Type: 'AWS::S3::Bucket',
         Properties: {
-          BucketName: '${ self:custom.names.s3.images }',
+          BucketName: '${self:custom.names.s3-images}',
           BucketEncryption: { ServerSideEncryptionConfiguration: [{ ServerSideEncryptionByDefault: { SSEAlgorithm: 'AES256' }}]},
           AccessControl: 'Private',
           WebsiteConfiguration: {
@@ -96,12 +95,12 @@ module.exports = {
       ImagesBucketPolicy: {
         Type: 'AWS::S3::BucketPolicy',
         Properties: {
-          Bucket: { 'Ref': 'ImagesBucket' },
+          Bucket: { Ref: 'ImagesBucket' },
           PolicyDocument: {
             Statement: {
               Effect: 'Allow',
               Action: [ 's3:GetObject' ],
-              Resource: 'arn:aws:s3:::${ self:custom.names.s3.images }/*',
+              Resource: 'arn:aws:s3:::${self:custom.names.s3-images}/*',
               Principal: '*'
             }
           }
