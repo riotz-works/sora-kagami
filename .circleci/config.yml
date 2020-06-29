@@ -91,6 +91,7 @@ workflows:
           stage: dev
           context: sora-kagami
           requires:
+            - lint
             - build
           filters:
             branches:
@@ -99,6 +100,7 @@ workflows:
           stage: qas
           context: sora-kagami
           requires:
+            - lint
             - build
           filters:
             branches:
@@ -107,6 +109,7 @@ workflows:
           stage: prd
           context: sora-kagami
           requires:
+            - lint
             - build
           filters:
             branches:
