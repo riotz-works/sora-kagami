@@ -1,12 +1,14 @@
-/* eslint-disable no-multi-spaces */                     // 'cuz clarify paired structure
-/* eslint-disable no-template-curly-in-string */         // 'cuz syntax of the serverless framework
-/* eslint-disable @typescript-eslint/no-var-requires */  // 'cuz of the JavaScript file
+/* eslint-disable no-multi-spaces */                    // 'cuz clarify paired structure
+/* eslint-disable no-template-curly-in-string */        // 'cuz syntax of the serverless framework
+/* eslint-disable @typescript-eslint/no-var-requires */ // 'cuz of the JavaScript file
 
-// Command line options
-// --stage:       Required System Landscape name, default is 'dev' (Choice: [dev | qas | prd], e.g. --stage dev)
-// --region:      Optional, default is determined by the value of `stage` (e.g. --region ap-northeast-1)
-// --bucket:      Optional, default is determined by the value of `stage` (e.g. --bucket x-sls-artifacts)
-// --aws-profile: Optional, when specifying AWS Profile name (If `dev` exists in `~/.aws/credentials`, e.g. --aws-profile dev )
+/*
+ * Command line options
+ * --stage:        Stage as a system landscape, default is 'dev' (Choice: [dev | prd], e.g. --stage dev)
+ * --region:       Region to deploy, default is determined by the value of `stage` (e.g. --region ap-northeast-1)
+ * --bucket:       Buckets to be used for deployment, or to specify when deploying to different accounts (e.g. --bucket my-deploys)
+ * --aws-profile:  Optional, when specifying AWS Profile name (If `devops` exists in `~/.aws/credentials`, e.g. --aws-profile devops)
+ */
 
 const pkg = require('./package.json');
 
@@ -36,12 +38,12 @@ module.exports = {
     }],
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1,
-      STAGE:            '${self:provider.stage}',
+      STAGE: '${self:provider.stage}',
       S3_IMAGES_REGION: '${self:provider.region}',
       S3_IMAGES_BUCKET: '${self:custom.names.s3-images}',
-      SLACK_TOKENS:     '${env:SLACK_TOKENS}',
-      YOLP_APP_ID:      '${env:YOLP_APP_ID}',
-      NOTE:             '${env:NOTE}'
+      SLACK_TOKENS: '${env:SLACK_TOKENS}',
+      YOLP_APP_ID: '${env:YOLP_APP_ID}',
+      NOTE: '${env:NOTE}'
     }
   },
 
