@@ -21,7 +21,7 @@ export class ZipCodeApi {
    */
   public async get(params: ZipCodeRequest): Promise<ZipCodeResponse> {
     if (!params.output) { params.output = 'json'; }
-    const data = (await this.client.get<ZipCodeResponse>(ZipCodeApi.URL, params)).data;
+    const { data } = await this.client.get<ZipCodeResponse>(ZipCodeApi.URL, params);
     console.debug('ZipCodeApi: %s', JSON.stringify(data, undefined, 2));
     return data;
   }

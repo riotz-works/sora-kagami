@@ -21,7 +21,7 @@ export class GeoCodeApi {
    */
   public async get(params: GeoCodeRequest): Promise<GeoCodeResponse> {
     if (!params.output) { params.output = 'json'; }
-    const data = (await this.client.get<GeoCodeResponse>(GeoCodeApi.URL, params)).data;
+    const { data } = await this.client.get<GeoCodeResponse>(GeoCodeApi.URL, params);
     console.debug('GeoCodeApi: %s', JSON.stringify(data, undefined, 2));
     return data;
   }
