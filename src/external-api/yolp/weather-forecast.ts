@@ -21,7 +21,7 @@ export class WeatherForecastApi {
    */
   public async get(params: WeatherForecastRequest): Promise<WeatherForecastResponse> {
     if (!params.output) { params.output = 'json'; }
-    const { data } = await this.client.get<WeatherForecastResponse>(WeatherForecastApi.URL, params);
+    const { data } = await this.client.get<WeatherForecastResponse>(WeatherForecastApi.URL, { ...params });
     console.debug('WeatherForecastApi: %s', JSON.stringify(data, undefined, 2));
     return data;
   }

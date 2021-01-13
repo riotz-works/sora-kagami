@@ -63,7 +63,7 @@ export const handler: Handler<APIGatewayProxyEvent, void> = async (event: APIGat
 
     const message = createMessage(place, weathers, filenames, geo);
     await apis.slack.response(command, message);
-  } catch (err) { await handleError(err as object, command); }
+  } catch (err) { await handleError(err as Record<string, unknown>, command); }
   return Promise.resolve();
 };
 
@@ -135,14 +135,14 @@ const createMessage = ({ area, buildings }: Place, { current, after1h }: Weather
 
   const message: Message = {
     text: `${icon} ${area} ${rain}\n${info}${chart}${map}${credit}\n${note}`,
-    response_type: 'in_channel' /* eslint-disable-line @typescript-eslint/camelcase */  // 'cuz key name defined by Slack API.
+    response_type: 'in_channel' /* eslint-disable-line camelcase */ // 'cuz to implement the specification of the external API of Slack
   };
   console.debug('Reply: %s', JSON.stringify(message, undefined, 2));
   return message;
 };
 
 
-const handleError = async (err: object, command: SlashCommand): Promise<void> => {
+const handleError = async (err: Record<string, unknown>, command: SlashCommand): Promise<void> => {
   console.error(err);
   const attachments: Attachment[] = [];
   if (err instanceof Error && Env.STAGE === 'dev') {
