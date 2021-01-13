@@ -21,7 +21,7 @@ export class PlaceInfoApi {
    */
   public async get(params: PlaceInfoRequest): Promise<PlaceInfoResponse> {
     if (!params.output) { params.output = 'json'; }
-    const { data } = await this.client.get<PlaceInfoResponse>(PlaceInfoApi.URL, params);
+    const { data } = await this.client.get<PlaceInfoResponse>(PlaceInfoApi.URL, { ...params });
     console.debug('PlaceInfoApi: %s', JSON.stringify(data, undefined, 2));
     return data;
   }

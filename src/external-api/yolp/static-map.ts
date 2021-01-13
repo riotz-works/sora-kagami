@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */ // 'cuz to implement the specification of the external API of YOLP
 import { injectable } from 'tsyringe';
 import { AxiosHttpClient } from '~/external-api/axios';
 
@@ -19,7 +20,7 @@ export class StaticMapApi {
    * @param params Request parameter.
    */
   public async get(params: StaticMapRequest): Promise<Buffer> {
-    return (await this.client.stream(StaticMapApi.URL, params)).data;
+    return (await this.client.stream(StaticMapApi.URL, { ...params })).data;
   }
 }
 

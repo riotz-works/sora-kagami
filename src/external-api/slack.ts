@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */ // 'cuz to implement the specification of the external API of Slack
 import { injectable } from 'tsyringe';
 import { AxiosHttpClient } from '~/external-api/axios';
 
@@ -18,7 +19,7 @@ export class SlackApi {
    * @param message Slash command execution result message.
    */
   public async response(command: SlashCommand, message: Message): Promise<void> {
-    await this.client.post(command.response_url, message);
+    await this.client.post(command.response_url, { ...message });
   }
 }
 
