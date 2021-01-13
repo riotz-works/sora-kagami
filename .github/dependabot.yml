@@ -8,3 +8,11 @@ updates:
       time: "02:00"
       timezone: Asia/Tokyo
     open-pull-requests-limit: 99
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      time: "02:00"
+      timezone: Asia/Tokyo
+    open-pull-requests-limit: 99
