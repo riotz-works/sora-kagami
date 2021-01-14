@@ -77,10 +77,15 @@ jobs:
       - uses: actions/github-script@v3
         with:
           script: |
-            github.pulls.merge({
+            github.pulls.createReview({
+              event: 'APPROVE',
               owner: context.payload.repository.owner.login,
               repo: context.payload.repository.name,
-              pull_number: context.payload.pull_request.number,
-              merge_method: 'rebase'
+              pull_number: context.payload.pull_request.number
             })
-          github-token: ${{ secrets.DEPLOY_GITHUB_TOKEN }}
+            github.pulls.merge({
+              merge_method: 'rebase',
+              owner: context.payload.repository.owner.login,
+              repo: context.payload.repository.name,
+              pull_number: context.payload.pull_request.number
+            })
