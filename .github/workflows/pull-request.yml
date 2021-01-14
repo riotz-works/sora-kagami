@@ -69,23 +69,26 @@ jobs:
       - run: |
           yarn build
 
-  auto-merge:
-    if: github.actor == 'dependabot[bot]'
-    needs: [ lint, build ]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/github-script@v3
-        with:
-          script: |
-            github.pulls.createReview({
-              event: 'APPROVE',
-              owner: context.payload.repository.owner.login,
-              repo: context.payload.repository.name,
-              pull_number: context.payload.pull_request.number
-            })
-            github.pulls.merge({
-              merge_method: 'rebase',
-              owner: context.payload.repository.owner.login,
-              repo: context.payload.repository.name,
-              pull_number: context.payload.pull_request.number
-            })
+  # TODO: Commented out because the "deploy" workflow event is not fired after merging.
+  #       Can be triggered by using PAT (Personal Access Token), but PAT should be avoided.
+  #
+  # auto-merge:
+  #   if: github.actor == 'dependabot[bot]'
+  #   needs: [ lint, build ]
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/github-script@v3
+  #       with:
+  #         script: |
+  #           github.pulls.createReview({
+  #             event: 'APPROVE',
+  #             owner: context.payload.repository.owner.login,
+  #             repo: context.payload.repository.name,
+  #             pull_number: context.payload.pull_request.number
+  #           })
+  #           github.pulls.merge({
+  #             merge_method: 'rebase',
+  #             owner: context.payload.repository.owner.login,
+  #             repo: context.payload.repository.name,
+  #             pull_number: context.payload.pull_request.number
+  #           })
