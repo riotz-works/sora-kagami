@@ -21,7 +21,7 @@
     "dayjs": "^1.10.3",
     "hex-rgba": "^1.0.2",
     "reflect-metadata": "^0.1.13",
-    "tsyringe": "^4.4.0",
+    "tsyringe": "^4.5.0",
     "ulid": "^2.3.0"
   },
   "devDependencies": {
