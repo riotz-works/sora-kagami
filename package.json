@@ -29,7 +29,7 @@
     "@types/chart.js": "^2.9.29",
     "@types/hex-rgba": "^1.0.0",
     "@types/node": "^14.14.20",
-    "@typescript-eslint/eslint-plugin": "^4.13.0",
+    "@typescript-eslint/eslint-plugin": "^4.26.1",
     "@typescript-eslint/parser": "^4.13.0",
     "all-contributors-cli": "^6.19.0",
     "eslint": "^7.17.0",
