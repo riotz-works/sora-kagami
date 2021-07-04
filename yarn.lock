@@ -731,10 +731,10 @@
   resolved "https://registry.yarnpkg.com/@types/estree/-/estree-0.0.45.tgz#e9387572998e5ecdac221950dab3e8c3b16af884"
   integrity sha512-jnqIUKDUqJbDIUxm0Uj7bnlMnRm1T/eZ9N+AVMqhPgzrba2GhGG5o/jCTwmdPK709nEZsGoMzXEDUjcXHa3W0g==
 
-"@types/hex-rgba@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@types/hex-rgba/-/hex-rgba-1.0.0.tgz#b2aed2aa9fdd6152b7f0ac5e3733b974d4eba35a"
-  integrity sha512-u3AGV8fjRsDBqY4wOvVWhVCgKDfh2b0h3mux7KPKU1cm/6mJp14OWBINLgBypeBTM89Nm2j+eKQqIoIe7150DA==
+"@types/hex-rgba@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@types/hex-rgba/-/hex-rgba-1.0.1.tgz#c2084e26a595a5f3b3c53ae390d6b753e6a34f18"
+  integrity sha512-7m39MAHAW+EoRYYlsWdah+Dph5ef/JxtrjycrfKuhldoXv0qLxJfxDrY9H6lrXBbJCIQhSw/w+a8LTMPENZ6Ag==
 
 "@types/http-cache-semantics@*":
   version "4.0.0"
