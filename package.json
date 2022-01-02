@@ -34,7 +34,7 @@
     "all-contributors-cli": "^6.19.0",
     "eslint": "^7.17.0",
     "rimraf": "^3.0.2",
-    "serverless": "^2.18.0",
+    "serverless": "^2.70.0",
     "serverless-offline": "^6.8.0",
     "serverless-webpack": "^5.3.5",
     "source-map-support": "^0.5.19",
