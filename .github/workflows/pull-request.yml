@@ -35,7 +35,7 @@ jobs:
       - run: |
           yarn lint --format junit --output-file reports/eslint/results.xml
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: lint-report-on-nodejs${{ matrix.node-version }}
           path: reports
